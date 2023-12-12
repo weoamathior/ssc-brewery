@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,6 +50,7 @@ public class BeerControllerIT {
                 .build();
     }
 
+    // not going through authentication manager
     @WithMockUser("spring")
     @Test
     void findBeers() throws Exception {
@@ -57,4 +59,17 @@ public class BeerControllerIT {
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
     }
+
+    @Test
+    void findBeersWithHttpBasic() throws Exception {
+        mockMvc.perform(get("/beers/find")
+                // this method uses the application.properties value
+                // creates an http header and authenticated through authentication module
+                        .with(httpBasic("spring","guru")))
+//                .with(httpBasic("foo","bar")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/findBeers"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
 }
