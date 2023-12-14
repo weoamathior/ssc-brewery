@@ -24,7 +24,7 @@ public class PasswordEncodingTest {
         // strength value slows things downs
         PasswordEncoder bcrypt16 = new BCryptPasswordEncoder(16);
         System.out.println(bcrypt16.encode(PASSWORD));
-        System.out.println(bcrypt16.encode(PASSWORD));
+        System.out.println(bcrypt16.encode("guru"));
     }
     @Test
     void testSha256() {
@@ -42,8 +42,8 @@ public class PasswordEncodingTest {
     void testLdap() {
         PasswordEncoder ldap = new LdapShaPasswordEncoder();
         System.out.println(ldap.encode(PASSWORD));
-        System.out.println(ldap.encode(PASSWORD));
-        System.out.println(ldap.encode(PASSWORD));
+        System.out.println(ldap.encode("tiger"));
+        System.out.println();
         String encodedPassword = ldap.encode(PASSWORD);
 
         assertTrue(ldap.matches(PASSWORD, encodedPassword));

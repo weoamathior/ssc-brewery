@@ -11,7 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 public class BeerControllerIT extends BaseIT{
-
+    @Test
+    void initCreationFormWithSpringGuru() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "guru")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
     @Test
     void initCreationForm() throws Exception {
         mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
