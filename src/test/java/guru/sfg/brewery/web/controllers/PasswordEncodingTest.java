@@ -22,9 +22,8 @@ public class PasswordEncodingTest {
         System.out.println();
 
         // strength value slows things downs
-        PasswordEncoder bcrypt16 = new BCryptPasswordEncoder(16);
-        System.out.println(bcrypt16.encode(PASSWORD));
-        System.out.println(bcrypt16.encode("guru"));
+        PasswordEncoder bcrypt16 = new BCryptPasswordEncoder(15);
+        System.out.println(bcrypt16.encode("tiger"));
     }
     @Test
     void testSha256() {
