@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("spring").password("{bcrypt}$2a$16$L8UgxnnceGLrMNkJpxYQLuY6UL9MYmER4N8JSuyDnNb9L7UyQGYu6").roles("ADMIN").and()
                 .withUser("user").password("{sha256}8a212c3cde9005dd9a52044794e16d7bc879334907489c42ab30a2b1b6cd56290d817859281810dd").roles("USER")
                 .and()
-                .withUser("scott").password("{bcrypt15}$2a$15$AlzRG0sfJSN5a2CIESjgjOu8fc99yFkEDkrqngGvmwBXeAqt.YpAq").roles("CUSTOMER");
+                .withUser("scott").password("{bcrypt10}$2a$10$hjI0kXS/ZH.zPyII9CTNZ.ZfM2wDkSz.5Cht06MNhm97TavYxwkvy").roles("CUSTOMER");
 
     }
 }

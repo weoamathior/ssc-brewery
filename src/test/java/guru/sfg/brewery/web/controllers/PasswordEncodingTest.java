@@ -22,7 +22,7 @@ public class PasswordEncodingTest {
         System.out.println();
 
         // strength value slows things downs
-        PasswordEncoder bcrypt16 = new BCryptPasswordEncoder(15);
+        PasswordEncoder bcrypt16 = new BCryptPasswordEncoder(10);
         System.out.println(bcrypt16.encode("tiger"));
     }
     @Test
