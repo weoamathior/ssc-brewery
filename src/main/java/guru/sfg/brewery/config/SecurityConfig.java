@@ -1,6 +1,7 @@
 package guru.sfg.brewery.config;
 
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
+import guru.sfg.brewery.security.RestParamAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager);
         return filter;
+    }
 
+    public RestParamAuthFilter restParamAuthFilter(AuthenticationManager authenticationManager) {
+        RestParamAuthFilter filter = new RestParamAuthFilter(new AntPathRequestMatcher("/api/**"));
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
     }
 
     @Bean
@@ -36,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
+        http.addFilterAfter(restParamAuthFilter(authenticationManager()), RestHeaderAuthFilter.class).csrf().disable();
         /**
          * The intent: No authentication on the home page or login page.  No authentication on static resources
          */
