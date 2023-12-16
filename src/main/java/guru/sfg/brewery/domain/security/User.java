@@ -1,6 +1,7 @@
 package guru.sfg.brewery.domain.security;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 @Setter
 @Builder
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -25,12 +26,12 @@ public class User {
     private Set<Authority> authorities;
 
     @Builder.Default
-    private Boolean accountNonExpired = true;
+    private boolean accountNonExpired = true;
     @Builder.Default
-    private Boolean accountNonLocked = true;
+    private boolean accountNonLocked = true;
     @Builder.Default
-    private Boolean credentialsNonExpired = true;
+    private boolean credentialsNonExpired = true;
     @Builder.Default
-    private Boolean enabled = true;
+    private boolean enabled = true;
 
 }
