@@ -22,11 +22,11 @@ public class UserLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Running userloader");
         Authority adminAuth = Authority.builder().authority("ADMIN").build();
-        Authority user = Authority.builder().authority("USER").build();
-        Authority customer = Authority.builder().authority("CUSTOMER").build();
+        Authority userAuth = Authority.builder().authority("USER").build();
+        Authority customerAuth = Authority.builder().authority("CUSTOMER").build();
         authorityRepository.save(adminAuth);
-        authorityRepository.save(user);
-        authorityRepository.save(customer);
+        authorityRepository.save(userAuth);
+        authorityRepository.save(customerAuth);
 
         User adminUser = User.builder()
                 .username("spring")
@@ -35,11 +35,11 @@ public class UserLoader implements CommandLineRunner {
         User userUser= User.builder()
                 .username("user")
                 .password(passwordEncoder.encode("password"))
-                .authority(adminAuth).build();
+                .authority(userAuth).build();
         User scott= User.builder()
                 .username("scott")
                 .password(passwordEncoder.encode("tiger"))
-                .authority(adminAuth).build();
+                .authority(customerAuth).build();
         userRepository.save(adminUser);
         userRepository.save(userUser);
         userRepository.save(scott);
