@@ -21,9 +21,9 @@ public class UserLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.info("Running userloader");
-        Authority adminAuth = Authority.builder().authority("ADMIN").build();
-        Authority userAuth = Authority.builder().authority("USER").build();
-        Authority customerAuth = Authority.builder().authority("CUSTOMER").build();
+        Authority adminAuth = Authority.builder().authority("ROLE_ADMIN").build();
+        Authority userAuth = Authority.builder().authority("ROLE_USER").build();
+        Authority customerAuth = Authority.builder().authority("ROLE_CUSTOMER").build();
         authorityRepository.save(adminAuth);
         authorityRepository.save(userAuth);
         authorityRepository.save(customerAuth);
