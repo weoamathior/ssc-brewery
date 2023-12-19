@@ -45,4 +45,20 @@ public class BreweryControllerIT extends BaseIT{
         mockMvc.perform(get("/brewery/api/v1/breweries"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @Test
+    void listBreweriesRestApiToAuthorizedAdmin() throws Exception {
+        mockMvc.perform(get("/brewery/api/v1/breweries")
+                        .with(httpBasic("spring","guru")))
+                .andExpect(status().is2xxSuccessful());
+
+    }
+    @Test
+    void listBreweriesSuccessForAdmin() throws Exception {
+        mockMvc.perform(get("/brewery/breweries")
+                        .with(httpBasic("spring", "guru"))
+
+                )
+                .andExpect(status().is2xxSuccessful());
+    }
 }
