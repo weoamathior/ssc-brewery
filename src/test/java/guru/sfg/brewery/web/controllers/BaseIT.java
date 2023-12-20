@@ -28,6 +28,10 @@ public abstract class BaseIT {
                 .build();
     }
 
+    public static Stream<Arguments> getStreamAdminCustomer() {
+        return Stream.of(Arguments.of("scott","tiger"),Arguments.of("spring","guru"));
+    }
+
     public static Stream<Arguments> getStreamAllUsers() {
         return Stream.of(
                 Arguments.of("spring","guru"),
