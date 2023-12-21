@@ -18,5 +18,5 @@ public class Authority implements GrantedAuthority {
     private Integer id;
     private String authority;
     @ManyToMany(mappedBy = "authorities")
-    private Set<User> users;
+    private Set<Role> roles;
 }
