@@ -1,6 +1,9 @@
 package guru.sfg.brewery.domain.security;
 
 import lombok.*;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -13,7 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @Builder
 @Entity
-public class User implements UserDetails {
+public class User implements UserDetails, CredentialsContainer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -25,13 +28,13 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<Role> roles;
-    @Transient
-    private Set<Authority> authorities;
 
-    public Set<Authority> getAuthorities() {
+    @Transient
+    public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(Role::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
                 .collect(Collectors.toSet());
     }
 
@@ -44,4 +47,8 @@ public class User implements UserDetails {
     @Builder.Default
     private boolean enabled = true;
 
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
+    }
 }
