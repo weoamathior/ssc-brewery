@@ -41,33 +41,49 @@ public class UserLoader implements CommandLineRunner {
         Authority readCustomer = makeAuthority("customer.read");
 
         Authority createBrewery = makeAuthority("brewery.create");
-        Authority updateBrewery= makeAuthority("brewery.update");
+        Authority updateBrewery = makeAuthority("brewery.update");
         Authority deleteBrewery = makeAuthority("brewery.delete");
-        Authority readBrewery= makeAuthority("brewery.read");
+        Authority readBrewery = makeAuthority("brewery.read");
 
+        // beer order
+        Authority createOrder = makeAuthority("order.create");
+        Authority updateOrder = makeAuthority("order.update");
+        Authority deleteOrder = makeAuthority("order.delete");
+        Authority readOrder = makeAuthority("order.read");
+
+        // customer beer order
+        Authority createOrderCustomer = makeAuthority("customer.order.create");
+        Authority updateOrderCustomer = makeAuthority("customer.order.update");
+        Authority deleteOrderCustomer = makeAuthority("customer.order.delete");
+        Authority readOrderCustomer = makeAuthority("customer.order.read");
 
         Role adminRole = roleRepository.save(Role.builder().name("ADMIN").build());
         Role customerRole = roleRepository.save(Role.builder().name("CUSTOMER").build());
         Role userRole = roleRepository.save(Role.builder().name("USER").build());
 
-        adminRole.setAuthorities(new HashSet<>(Set.of(createBeer,updateBeer,deleteBeer,readBeer,
-                createCustomer,updateCustomer,deleteCustomer,readCustomer,
-                createBrewery,updateBrewery,deleteBrewery,readBrewery
+        adminRole.setAuthorities(new HashSet<>(Set.of(createBeer, updateBeer, deleteBeer, readBeer,
+                createCustomer, updateCustomer, deleteCustomer, readCustomer,
+                createBrewery, updateBrewery, deleteBrewery, readBrewery,
+                createOrder, updateOrder, deleteOrder, readOrder
         )));
-        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer,readBrewery)));
+
+        customerRole.setAuthorities(new HashSet<>(Set.of(readBeer, readCustomer, readBrewery,
+                createOrderCustomer, updateOrderCustomer, deleteOrderCustomer, readOrderCustomer
+        )));
+
         userRole.setAuthorities(new HashSet<>(Set.of(readBeer)));
 
-        roleRepository.saveAll(Arrays.asList(adminRole,customerRole, userRole));
+        roleRepository.saveAll(Arrays.asList(adminRole, customerRole, userRole));
 
         User adminUser = User.builder()
                 .username("spring")
                 .password(passwordEncoder.encode("guru"))
                 .role(adminRole).build();
-        User userUser= User.builder()
+        User userUser = User.builder()
                 .username("user")
                 .password(passwordEncoder.encode("password"))
                 .role(userRole).build();
-        User scott= User.builder()
+        User scott = User.builder()
                 .username("scott")
                 .password(passwordEncoder.encode("tiger"))
                 .role(customerRole).build();
@@ -79,6 +95,6 @@ public class UserLoader implements CommandLineRunner {
     }
 
     private Authority makeAuthority(String authKey) {
-       return authorityRepository.save(Authority.builder().authority(authKey).build());
+        return authorityRepository.save(Authority.builder().authority(authKey).build());
     }
 }
