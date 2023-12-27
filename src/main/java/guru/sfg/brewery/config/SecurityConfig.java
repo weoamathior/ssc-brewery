@@ -43,10 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .authorizeRequests()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().and()
-                .httpBasic().and()
-                .csrf().disable();
+                .and().formLogin()
+                .and().httpBasic()
+                .and().csrf().ignoringAntMatchers("/h2-console/**", "/api/**");
 
         // h2-console config (spring security blocks frames)
         http.headers().frameOptions().sameOrigin();
