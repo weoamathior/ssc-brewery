@@ -26,7 +26,9 @@ public class SecurityBeans {
                 = new GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder();
 
         configBuilder
-                .setTimeStepSizeInMillis(TimeUnit.SECONDS.toMillis(60))
+                // magically set this value to 30 (from 60) to make things work
+                // see https://www.udemy.com/course/spring-security-core-beginner-to-guru/learn/lecture/21369384#questions
+                .setTimeStepSizeInMillis(TimeUnit.SECONDS.toMillis(30))
                 .setWindowSize(10)
                 .setNumberOfScratchCodes(0);
 
