@@ -41,15 +41,36 @@ public class UserController {
         log.debug("verifyCode = " + verifyCode);
         User user = getUser();
         if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
+            log.debug("2fa authorized!");
             User savedUser = userRepository.findById(user.getId()).orElseThrow();
             savedUser.setUseGoogle2fa(true);
             userRepository.save(savedUser);
-            return "index";
+            return "/index";
 
         } else {
             log.debug("oh no... that's a bad code");
             // bad code
             return "user/register2fa";
+        }
+    }
+
+    @GetMapping("/verify2fa")
+    public String verify2fa() {
+        return "user/verify2fa";
+    }
+
+    @PostMapping("/verify2fa")
+    public String verifyPost2fa(@RequestParam Integer verifyCode) {
+        log.debug("verify code is " + verifyCode);
+        User user = getUser();
+
+        if (googleAuthenticator.authorizeUser(user.getUsername(), verifyCode)) {
+            log.debug("2fa authorized!");
+            user.setGoogle2faRequired(false);
+            return "/index";
+        } else {
+            log.debug("oh no bad code");
+            return "user/verify2fa";
         }
     }
 
