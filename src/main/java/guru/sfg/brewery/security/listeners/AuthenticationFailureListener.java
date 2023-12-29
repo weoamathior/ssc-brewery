@@ -13,6 +13,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -51,7 +54,21 @@ public class AuthenticationFailureListener {
             }
             LoginFailure failure = loginFailureRepository.save(builder.build());
             log.debug("login failure saved : " + failure.getId());
+
+            if (failure.getUser() != null) {
+                lockUserAccount(failure.getUser());
+            }
         }
 
+    }
+
+    private void lockUserAccount(User user) {
+        List<LoginFailure> failures = loginFailureRepository
+                .findAllByUserAndCreatedDateIsAfter(user, Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
+        if (failures.size() > 3) {
+            log.debug("locking user");
+            user.setAccountNonLocked(false);
+            userRepository.save(user);
+        }
     }
 }
