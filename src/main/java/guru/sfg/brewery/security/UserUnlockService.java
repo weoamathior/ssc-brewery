@@ -17,9 +17,9 @@ import java.util.List;
 public class UserUnlockService {
     private final UserRepository userRepository;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 300000)
     public void unlockAccounts() {
-//        log.debug("running unlock accounts");
+        log.debug("running unlock accounts");
 
         List<User> users = userRepository
                 .findAllByAccountNonLockedAndLastModifiedDateBefore(false, Timestamp.valueOf(LocalDateTime.now().minusSeconds(30)));
